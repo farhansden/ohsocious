@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socious - Find Connections</title>
+    <link rel="stylesheet" href="matching.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">Socious</div>
+            <div class="nav-icons">
+                <a href="matches.html"><i class="fas fa-heart"></i></a>
+                <a href="profile.html"><i class="fas fa-user"></i></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="card-stack" id="cardStack">
+            <img src="monica.png" alt="Description of the image" class="card-image">
+            <!-- Cards will be dynamically inserted here -->
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn skip-btn" id="skipBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="action-btn connect-btn" id="connectBtn">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Match Popup -->
+    <div class="match-popup" id="matchPopup">
+        <div class="match-content">
+            <h2>It's a Match! 🎉</h2>
+            <p>You and <span class="matched-name">Sarah</span> have connected!</p>
+            <div class="match-actions">
+                <button class="send-message-btn">Send Message</button>
+                <button class="keep-browsing-btn">Keep Browsing</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

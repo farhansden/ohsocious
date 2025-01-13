@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socious - Login/Sign Up</title>
+    <link rel="stylesheet" href="auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const switchBtns = document.querySelectorAll('.switch-btn');
+            const forms = document.querySelectorAll('.auth-form');
+
+            switchBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const formType = this.getAttribute('data-form');
+
+                    // Hide all forms
+                    forms.forEach(form => {
+                        form.classList.remove('active');
+                    });
+
+                    // Show the selected form
+                    document.getElementById(formType + 'Form').classList.add('active');
+
+                    // Update button active state
+                    switchBtns.forEach(button => {
+                        button.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-switcher">
+                <button class="switch-btn active" data-form="login">Login</button>
+                <button class="switch-btn" data-form="signup">Sign Up</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form active" onsubmit="return redirectToLoader('login')">
+                <h2>Welcome Back!</h2>
+                <div class="form-group">
+                    <input type="email" required>
+                    <label>University Email</label>
+                </div>
+                <div class="form-group">
+                    <input type="password" required>
+                    <label>Password</label>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+                <a href="#" class="forgot-password">Forgot Password?</a>
+            </form>
+
+            <!-- Sign Up Form -->
+            <form id="signupForm" class="auth-form" onsubmit="return redirectToLoader('signup')">
+                <h2>Create Account</h2>
+                <div class="form-group">
+                    <input type="text" required>
+                    <label>Full Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="email" required>
+                    <label>University Email</label>
+                </div>
+                <div class="form-group">
+                    <select id="universityDropdown">
+                        <option value="">Select a university</option>
+                        <option value="Christ University">Christ University</option>
+                        <option value="PES University">PES University</option>
+                        <option value="Bangalore University">Bangalore University</option>
+                        <option id="userInputOption" value=""></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="universityInput" placeholder="Type your university" oninput="updateDropdown()"/>
+                </div>
+                <div class="form-group">
+                    <input type="password" required id="signupPassword" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required>
+                    <span id="passwordMatchMessage" style="color: red; display: none;">Passwords do not match!</span>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="srnNumber" placeholder="SRN Number" required>
+                </div>
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    function updateDropdown() {
+        const input = document.getElementById('universityInput').value;
+        const dropdown = document.getElementById('universityDropdown');
+        const userInputOption = document.getElementById('userInputOption');
+
+        userInputOption.value = input;
+        userInputOption.textContent = input;
+    }
+
+    function validateLogin() {
+        const password = document.querySelector('#loginForm input[type="password"]').value;
+        // Add any additional login validation if needed
+        return true; // Allow submission
+    }
+
+    function validateSignup() {
+        const password = document.querySelector('#signupForm input[name="password"]').value;
+        const confirmPassword = document.querySelector('#signupForm input[name="confirmPassword"]').value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match!");
+            return false; // Prevent form submission
+        }
+        return true; // Allow submission
+    }
+
+    // Real-time password validation
+    document.getElementById('signupPassword').addEventListener('input', validatePasswordMatch);
+    document.getElementById('confirmPassword').addEventListener('input', validatePasswordMatch);
+
+    function validatePasswordMatch() {
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const message = document.getElementById('passwordMatchMessage');
+
+        // Only show the message if the confirm password field is not empty
+        if (confirmPassword !== "" && password !== confirmPassword) {
+            message.style.display = 'block'; // Show mismatch message
+        } else {
+            message.style.display = 'none'; // Hide mismatch message
+        }
+    }
+
+    function redirectToLoader(formType) {
+        // Perform any necessary validation
+        if (formType === 'login') {
+            if (validateLogin()) {
+                window.location.href = 'loader.html'; // Redirect to loader page
+                return false; // Prevent default form submission
+            }
+        } else if (formType === 'signup') {
+            if (validateSignup()) {
+                window.location.href = 'loader.html'; // Redirect to loader page
+                return false; // Prevent default form submission
+            }
+        }
+        return false; // Prevent default form submission if validation fails
+    }
+    </script>
+</body>
+</html> 

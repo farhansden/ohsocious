@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading - ohscoious</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .loading-text {
+            font-family: Arial, sans-serif;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: #fff;
+            position: relative;
+        }
+
+        .loading-text span {
+            display: inline-block;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out infinite;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            20% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            80% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-text">
+        <span style="animation-delay: 0.1s">o</span>
+        <span style="animation-delay: 0.2s">h</span>
+        <span style="animation-delay: 0.3s">s</span>
+        <span style="animation-delay: 0.4s">c</span>
+        <span style="animation-delay: 0.5s">o</span>
+        <span style="animation-delay: 0.6s">i</span>
+        <span style="animation-delay: 0.7s">o</span>
+        <span style="animation-delay: 0.8s">u</span>
+        <span style="animation-delay: 0.9s">s</span>
+    </div>
+
+    <script>
+        // Add this if you want to redirect after loading
+        setTimeout(() => {
+            // Replace 'your-main-page.html' with your actual main page URL
+            window.location.href = 'faceauth.html';
+        }, 3000); // Redirects after 3 seconds
+    </script>
+</body>
+</html> 

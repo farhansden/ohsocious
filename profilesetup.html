@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Your Profile ✨</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            color: #333;
+            padding: 2rem 0;
+        }
+
+        .step-container {
+            max-width: 800px;
+            width: 90%;
+            margin: 2rem auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-header {
+            margin-bottom: 2rem;
+        }
+
+        .step-header h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .step-header p {
+            color: #666;
+        }
+
+        .photo-upload {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 2rem;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #f5f5f5;
+            border: 2px dashed #ddd;
+            cursor: pointer;
+        }
+
+        .photo-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .upload-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .photo-upload:hover .upload-overlay {
+            opacity: 1;
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .photo-item {
+            aspect-ratio: 1;
+            background: #f5f5f5;
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            position: relative;
+            border: 2px dashed #ddd;
+        }
+
+        .btn {
+            background: #6a11cb;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #5a0eb9;
+        }
+
+        .btn.next {
+            background: #6a11cb;
+            color: white;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(106, 17, 203, 0.1);
+            margin-bottom: 2rem;
+            border-radius: 2px;
+        }
+
+        .progress {
+            height: 100%;
+            background: #6a11cb;
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        .upload-options {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 1rem;
+            border-radius: 20px 20px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .upload-options.active {
+            transform: translateY(0);
+        }
+
+        .upload-option {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .upload-option i {
+            margin-right: 1rem;
+            font-size: 1.5rem;
+            color: #6a11cb;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .error-message {
+            color: #ff4757;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .bio-section {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .bio-section label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            background: #f5f5f5;
+            color: #333;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            margin-bottom: 0.5rem;
+        }
+
+        textarea::placeholder {
+            color: #999;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .select-section {
+            margin-bottom: 2rem;
+            text-align: left;
+        }
+
+        .select-wrapper {
+            margin-bottom: 1.5rem;
+        }
+
+        .select-wrapper label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            background: #f5f5f5;
+            color: #333;
+            font-size: 1rem;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        select option {
+            background: white;
+            color: #333;
+        }
+
+        select optgroup {
+            background: white;
+            color: #333;
+        }
+
+        #cameraFeed {
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            transform: scaleX(-1); /* Mirror effect */
+        }
+
+        .camera-controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .celebration-container {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .confetti {
+            font-size: 3rem;
+            position: absolute;
+            animation: confettiFall 2s ease-in-out infinite;
+        }
+
+        .confetti:nth-child(1) { left: 20%; animation-delay: 0s; }
+        .confetti:nth-child(2) { left: 50%; animation-delay: 0.5s; }
+        .confetti:nth-child(3) { left: 80%; animation-delay: 1s; }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
+        }
+
+        .completion-title {
+            font-size: 2.5rem;
+            margin: 2rem 0;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: titlePop 0.5s ease-out;
+        }
+
+        @keyframes titlePop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .completion-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 2rem auto;
+            overflow: hidden;
+            border: 4px solid #6a11cb;
+            animation: avatarBounce 1s ease-out;
+        }
+
+        .completion-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes avatarBounce {
+            0% { transform: translateY(-200px); }
+            60% { transform: translateY(20px); }
+            100% { transform: translateY(0); }
+        }
+
+        .completion-message {
+            margin: 2rem 0;
+        }
+
+        .main-message {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #6a11cb;
+        }
+
+        .fun-message {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .humor-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .humor-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .humor-list li {
+            margin: 1rem 0;
+            padding: 0.8rem;
+            background: rgba(106, 17, 203, 0.1);
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .humor-list li:hover {
+            transform: translateX(10px);
+        }
+
+        .finish-btn {
+            margin-top: 2rem;
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, #6a11cb, #2575fc);
+            animation: buttonPulse 2s infinite;
+        }
+
+        @keyframes buttonPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 360px;
+            height: 480px;
+            margin: 0 auto;
+            position: relative;
+            touch-action: none;
+        }
+
+        .card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            cursor: grab;
+            transition: transform 0.3s;
+        }
+
+        .card-image {
+            width: 100%;
+            height: 70%;
+            overflow: hidden;
+        }
+
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1rem;
+        }
+
+        .card-content h3 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
+        .card-content p {
+            margin: 0.5rem 0;
+            color: #666;
+        }
+
+        .swipe-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .like-badge, .nope-badge {
+            padding: 1rem 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            border: 4px solid;
+            border-radius: 10px;
+            transform: rotate(-30deg);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .like-badge {
+            color: #4CAF50;
+            border-color: #4CAF50;
+        }
+
+        .nope-badge {
+            color: #FF5252;
+            border-color: #FF5252;
+        }
+
+        .swipe-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .btn-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-circle:hover {
+            transform: scale(1.1);
+        }
+
+        .btn-circle.like {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .btn-circle.nope {
+            background: #FF5252;
+            color: white;
+        }
+
+        .card.swiping-left {
+            transform: translateX(-150%) rotate(-30deg);
+            opacity: 0;
+        }
+
+        .card.swiping-right {
+            transform: translateX(150%) rotate(30deg);
+            opacity: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="step-container">
+        <div class="progress-bar">
+            <div class="progress" style="width: 25%"></div>
+        </div>
+
+        <!-- Step 1: Profile Picture -->
+        <div class="step active" id="step1">
+            <div class="step-header">
+                <h2>Choose Your Profile Picture</h2>
+                <p>This will be the first photo people see! Make it count! ✨</p>
+            </div>
+            <div class="photo-upload" onclick="showUploadOptions()">
+                <img id="profilePreview" src="placeholder.jpg">
+                <div class="upload-overlay">
+                    <i class="fas fa-camera upload-icon"></i>
+                    <p>Click to upload</p>
+                </div>
+            </div>
+            <button class="btn next" onclick="nextStep()" disabled>Next</button>
+        </div>
+
+        <!-- Step 2: Additional Photos -->
+        <div class="step" id="step2">
+            <div class="step-header">
+                <h2>Add More Photos</h2>
+                <p>Show off your personality with up to 5 more photos! 📸</p>
+            </div>
+            <div class="photo-grid">
+                <div class="photo-item" onclick="showUploadOptions(1)">
+                    <img id="photo1" src="placeholder.jpg">
+                    <div class="upload-overlay">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                <div class="photo-item" onclick="showUploadOptions(2)">
+                    <img id="photo2" src="placeholder.jpg">
+                    <div class="upload-overlay">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                <div class="photo-item" onclick="showUploadOptions(3)">
+                    <img id="photo3" src="placeholder.jpg">
+                    <div class="upload-overlay">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+                <div class="photo-item" onclick="showUploadOptions(4)">
+                    <img id="photo4" src="placeholder.jpg">
+                    <div class="upload-overlay">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                </div>
+            </div>
+            <button class="btn" onclick="previousStep()">Back</button>
+            <button class="btn next" onclick="nextStep()">Next</button>
+        </div>
+
+        <!-- Step 3: Bio and Course Info -->
+        <div class="step" id="step3">
+            <div class="step-header">
+                <h2>Tell Us About You</h2>
+                <p>Let's make your profile stand out! ✍️</p>
+            </div>
+            
+            <div class="bio-section">
+                <label>Your Bio</label>
+                <textarea 
+                    id="bio" 
+                    placeholder="Keep it real, keep it you! What makes you unique? 🌟" 
+                    maxlength="150"
+                ></textarea>
+                <div class="character-count">0/150</div>
+            </div>
+
+            <div class="select-section">
+                <div class="select-wrapper">
+                    <label>What are you studying? 📚</label>
+                    <select id="course">
+                        <option value="">Choose your course</option>
+                        
+                        <optgroup label="Computer Application Programs">
+                            <option value="bca">BCA (Bachelor of Computer Applications)</option>
+                            <option value="mca">MCA (Master of Computer Applications)</option>
+                        </optgroup>
+
+                        <optgroup label="B.Tech Programs">
+                            <option value="btech_cs">B.Tech - Computer Science</option>
+                            <option value="btech_ec">B.Tech - Electronics</option>
+                            <option value="btech_me">B.Tech - Mechanical</option>
+                            <option value="btech_integrated">B.Tech + M.Tech Integrated Program</option>
+                        </optgroup>
+
+                        <optgroup label="Business Programs">
+                            <option value="bba_gen">BBA - General</option>
+                            <option value="bba_honors">BBA - Honors</option>
+                            <option value="bba_analytics">BBA - Business Analytics</option>
+                            <option value="bcom_gen">BCom - General</option>
+                            <option value="bcom_honors">BCom - Honors</option>
+                        </optgroup>
+
+                        <optgroup label="Law Programs">
+                            <option value="bba_llb">BBA + LLB (Hons)</option>
+                            <option value="ba_llb">BA LLB (Hons)</option>
+                            <option value="llm">LLM (Master of Laws)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="select-wrapper">
+                    <label>Which year are you in? 🎓</label>
+                    <select id="year">
+                        <option value="">Select your year</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                        <option value="5">5th Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <button class="btn" onclick="previousStep()">Back</button>
+            <button class="btn next" onclick="nextStep()">Next</button>
+        </div>
+
+        <!-- Step 4: Completion -->
+        <div class="step" id="step4">
+            <div class="celebration-container">
+                <div class="confetti">🎉</div>
+                <div class="confetti">✨</div>
+                <div class="confetti">🎈</div>
+                
+                <h2 class="completion-title">Woohoo! You're All Set! 🚀</h2>
+                
+                <div class="completion-avatar">
+                    <img id="finalProfilePic" src="placeholder.jpg">
+                </div>
+                
+                <div class="completion-message">
+                    <p class="main-message">Profile successfully created!</p>
+                    <p class="fun-message">Now you're ready to take over the campus! 😎</p>
+                    <p class="humor-text">Remember:</p>
+                    <ul class="humor-list">
+                        <li>✅ Your profile is looking fresher than cafeteria food</li>
+                        <li>✅ You're now officially cooler than your roommate</li>
+                        <li>✅ Time to make those notifications go wild! 📱</li>
+                    </ul>
+                </div>
+
+                <button class="btn finish-btn" onclick="nextStep()">Let's Go! 🎯</button>
+            </div>
+        </div>
+
+        <!-- Step 5: Practice Swiping -->
+        <div class="step" id="step5">
+            <div class="step-header">
+                <h2>Practice Swiping</h2>
+                <p>Let's try out how swiping works! 👆</p>
+            </div>
+            
+            <div class="card-container">
+                <div class="card" id="demoCard">
+                    <div class="card-image">
+                        <img src="monica.jpeg" alt="Demo Profile">
+                    </div>
+                    <div class="card-content">
+                        <h3>Demo Profile</h3>
+                        <p>BTech - Computer Science • 2nd Year</p>
+                        <p class="bio">This is a demo profile to help you understand how swiping works! Try swiping left or right!</p>
+                    </div>
+                    <div class="swipe-overlay">
+                        <div class="like-badge">LIKE 💚</div>
+                        <div class="nope-badge">NOPE 💔</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Button -->
+            <button class="btn next" onclick="window.location.href='loader4.html'">Next</button>
+        </div>
+
+        <!-- Additional steps for bio and course selection -->
+    </div>
+
+    <!-- Upload Options Modal -->
+    <div class="upload-options" id="uploadOptions">
+        <div class="upload-option" onclick="openCamera()">
+            <i class="fas fa-camera"></i>
+            <span>Take Photo</span>
+        </div>
+        <div class="upload-option" onclick="openGallery()">
+            <i class="fas fa-image"></i>
+            <span>Choose from Gallery</span>
+        </div>
+        <div class="upload-option" onclick="hideUploadOptions()">
+            <i class="fas fa-times"></i>
+            <span>Cancel</span>
+        </div>
+    </div>
+
+    <input type="file" id="fileInput" accept="image/*">
+
+    <script>
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function showUploadOptions() {
+            document.getElementById('uploadOptions').classList.add('active');
+        }
+
+        function hideUploadOptions() {
+            document.getElementById('uploadOptions').classList.remove('active');
+        }
+
+        function openCamera() {
+            // Implement camera functionality
+        }
+
+        function openGallery() {
+            document.getElementById('fileInput').click();
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                
+                if (currentStep === 4) {  // When moving to the final step
+                    const profilePic = document.getElementById('profilePreview').src;
+                    document.getElementById('finalProfilePic').src = profilePic;
+                }
+                
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+                
+                // Initialize swipe functionality when reaching step 5
+                if (currentStep === 5) {
+                    initializeSwipe();
+                }
+            }
+        }
+
+        function previousStep() {
+            if (currentStep > 1) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep--;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep - 1) / (totalSteps - 1) * 100;
+            document.querySelector('.progress').style.width = `${progress}%`;
+        }
+
+        // File input handling
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = currentStep === 1 ? 
+                        document.getElementById('profilePreview') : 
+                        document.getElementById(`photo${currentPhotoIndex}`);
+                    img.src = e.target.result;
+                    if (currentStep === 1) {
+                        document.querySelector('.btn.next').disabled = false;
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+            hideUploadOptions();
+        });
+
+        // Add this JavaScript for character count
+        document.getElementById('bio').addEventListener('input', function() {
+            const maxLength = this.getAttribute('maxlength');
+            const currentLength = this.value.length;
+            document.querySelector('.character-count').textContent = 
+                `${currentLength}/${maxLength}`;
+        });
+
+        let currentPhotoSlot = null;
+        let stream = null;
+
+        // Function to open camera
+        async function openCamera() {
+            try {
+                // Create video element if it doesn't exist
+                let videoElement = document.getElementById('cameraFeed');
+                if (!videoElement) {
+                    videoElement = document.createElement('video');
+                    videoElement.id = 'cameraFeed';
+                    videoElement.autoplay = true;
+                    videoElement.playsinline = true;
+                    
+                    const videoContainer = document.createElement('div');
+                    videoContainer.id = 'cameraContainer';
+                    videoContainer.style.cssText = `
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: rgba(0,0,0,0.9);
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        z-index: 1000;
+                    `;
+                    
+                    const captureBtn = document.createElement('button');
+                    captureBtn.className = 'btn';
+                    captureBtn.innerHTML = 'Take Photo 📸';
+                    captureBtn.style.marginTop = '1rem';
+                    
+                    const closeBtn = document.createElement('button');
+                    closeBtn.className = 'btn secondary';
+                    closeBtn.innerHTML = 'Close';
+                    closeBtn.style.marginTop = '1rem';
+                    
+                    videoContainer.appendChild(videoElement);
+                    videoContainer.appendChild(captureBtn);
+                    videoContainer.appendChild(closeBtn);
+                    document.body.appendChild(videoContainer);
+                    
+                    captureBtn.onclick = capturePhoto;
+                    closeBtn.onclick = closeCamera;
+                }
+
+                // Get camera stream
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { 
+                        facingMode: 'user',
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
+                    }
+                });
+                videoElement.srcObject = stream;
+                hideUploadOptions();
+                
+            } catch (err) {
+                alert('Camera access denied or error occurred: ' + err.message);
+                hideUploadOptions();
+            }
+        }
+
+        // Function to capture photo
+        function capturePhoto() {
+            const video = document.getElementById('cameraFeed');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            // Get the captured image as data URL
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+            
+            // Update the appropriate image based on current step
+            if (currentStep === 1) {
+                document.getElementById('profilePreview').src = imageDataUrl;
+                document.querySelector('.btn.next').disabled = false;
+            } else {
+                const availableSlot = findEmptyPhotoSlot();
+                if (availableSlot) {
+                    availableSlot.src = imageDataUrl;
+                }
+            }
+            
+            closeCamera();
+        }
+
+        // Function to find empty photo slot in step 2
+        function findEmptyPhotoSlot() {
+            for (let i = 1; i <= 5; i++) {
+                const img = document.getElementById(`photo${i}`);
+                if (img && img.src.includes('placeholder.jpg')) {
+                    return img;
+                }
+            }
+            return null;
+        }
+
+        // Function to close camera
+        function closeCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+            
+            const container = document.getElementById('cameraContainer');
+            if (container) {
+                container.remove();
+            }
+        }
+
+        // Add this to your existing showUploadOptions function
+        function showUploadOptions(photoIndex) {
+            currentPhotoSlot = photoIndex;
+            document.getElementById('uploadOptions').classList.add('active');
+        }
+
+        // Update your HTML for photo items to include index
+        // In Step 2, update your photo items like this:
+
+        function finishSetup() {
+            // Update this function to handle the completion
+            // For example, redirect to main app or show welcome screen
+            window.location.href = ''; // Or wherever you want to redirect
+        }
+
+        // Add this to your nextStep function to update final profile picture
+        if (currentStep === 3) {
+            document.getElementById('finalProfilePic').src = 
+                document.getElementById('profilePreview').src;
+        }
+
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        function initializeSwipe() {
+            const card = document.getElementById('demoCard');
+            
+            // Touch events
+            card.addEventListener('touchstart', handleDragStart);
+            card.addEventListener('touchmove', handleDragMove);
+            card.addEventListener('touchend', handleDragEnd);
+            
+            // Mouse events
+            card.addEventListener('mousedown', handleDragStart);
+            card.addEventListener('mousemove', handleDragMove);
+            card.addEventListener('mouseup', handleDragEnd);
+            card.addEventListener('mouseleave', handleDragEnd);
+        }
+
+        function handleDragStart(e) {
+            isDragging = true;
+            startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            currentX = startX;
+        }
+
+        function handleDragMove(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            const deltaX = currentX - startX;
+            const card = document.getElementById('demoCard');
+            const rotation = deltaX * 0.1;
+            
+            card.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+            
+            // Show appropriate badge based on swipe direction
+            const likeBadge = card.querySelector('.like-badge');
+            const nopeBadge = card.querySelector('.nope-badge');
+            
+            if (deltaX > 50) {
+                likeBadge.style.opacity = Math.min(deltaX / 100, 1);
+                nopeBadge.style.opacity = 0;
+            } else if (deltaX < -50) {
+                nopeBadge.style.opacity = Math.min(Math.abs(deltaX) / 100, 1);
+                likeBadge.style.opacity = 0;
+            } else {
+                likeBadge.style.opacity = 0;
+                nopeBadge.style.opacity = 0;
+            }
+        }
+
+        function handleDragEnd() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            const deltaX = currentX - startX;
+            
+            if (Math.abs(deltaX) > 100) {
+                handleSwipe(deltaX > 0 ? 'right' : 'left');
+            } else {
+                resetCard();
+            }
+        }
+
+        function handleSwipe(direction) {
+            const card = document.getElementById('demoCard');
+            card.className = `card swiping-${direction}`;
+            
+            // Reset card after animation
+            setTimeout(() => {
+                resetCard();
+            }, 300);
+        }
+
+        function resetCard() {
+            const card = document.getElementById('demoCard');
+            card.className = 'card';
+            card.style.transform = '';
+            const badges = card.querySelectorAll('.like-badge, .nope-badge');
+            badges.forEach(badge => badge.style.opacity = 0);
+        }
+
+        // Initialize swipe functionality when reaching step 5
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                document.getElementById(`step${currentStep}`).classList.remove('active');
+                currentStep++;
+                document.getElementById(`step${currentStep}`).classList.add('active');
+                updateProgress();
+                
+                if (currentStep === 5) {
+                    initializeSwipe();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
