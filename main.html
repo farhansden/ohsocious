@@ -46,5 +46,78 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        function initializeSwipe() {
+            const card = document.getElementById('cardStack'); // Updated to target the correct element
+            
+            // Touch events
+            card.addEventListener('touchstart', handleDragStart);
+            card.addEventListener('touchmove', handleDragMove);
+            card.addEventListener('touchend', handleDragEnd);
+            
+            // Mouse events
+            card.addEventListener('mousedown', handleDragStart);
+            card.addEventListener('mousemove', handleDragMove);
+            card.addEventListener('mouseup', handleDragEnd);
+            card.addEventListener('mouseleave', handleDragEnd);
+        }
+
+        function handleDragStart(e) {
+            isDragging = true;
+            startX = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX;
+            currentX = startX;
+        }
+
+        function handleDragMove(e) {
+            if (!isDragging) return;
+            
+            e.preventDefault();
+            currentX = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+            const deltaX = currentX - startX;
+            const card = document.getElementById('cardStack'); // Updated to target the correct element
+            const rotation = deltaX * 0.1; // Adjust rotation factor if needed
+            
+            card.style.transform = `translateX(${deltaX}px) rotate(${rotation}deg)`;
+            // ... existing badge logic ...
+        }
+
+        function handleDragEnd() {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            const deltaX = currentX - startX;
+            
+            if (Math.abs(deltaX) > 100) {
+                handleSwipe(deltaX > 0 ? 'right' : 'left');
+            } else {
+                resetCard();
+            }
+        }
+
+        function handleSwipe(direction) {
+            const card = document.getElementById('cardStack'); // Updated to target the correct element
+            card.className = `card swiping-${direction}`;
+            
+            // Reset card after animation
+            setTimeout(() => {
+                resetCard();
+            }, 300); // Adjust timing if needed
+        }
+
+        function resetCard() {
+            const card = document.getElementById('cardStack'); // Updated to target the correct element
+            card.className = 'card';
+            card.style.transform = '';
+            // ... existing badge reset logic ...
+        }
+
+        // Initialize swipe functionality
+        document.addEventListener('DOMContentLoaded', initializeSwipe);
+    </script>
 </body>
 </html> 
