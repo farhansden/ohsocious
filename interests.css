@@ -1,0 +1,217 @@
+:root {
+    --primary: #6a11cb;
+    --secondary: #2575fc;
+    --text: #333;
+    --light: #ffffff;
+    --shadow: rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+}
+
+.setup-container {
+    background: var(--light);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+h1 {
+    text-align: center;
+    color: var(--text);
+    margin-bottom: 30px;
+}
+
+.progress-bar {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+    padding: 0 40px;
+}
+
+.progress {
+    position: absolute;
+    height: 2px;
+    background: var(--primary);
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    transition: width 0.3s ease;
+}
+
+.step {
+    width: 30px;
+    height: 30px;
+    background: var(--light);
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    position: relative;
+    z-index: 1;
+}
+
+.step.active {
+    border-color: var(--primary);
+    background: var(--primary);
+    color: var(--light);
+}
+
+.profile-photo-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.photo-upload {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    cursor: pointer;
+}
+
+.photo-preview {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+}
+
+.photo-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--light);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.photo-upload:hover .upload-overlay {
+    opacity: 1;
+}
+
+.interests-section {
+    padding: 20px;
+}
+
+.interests-section h2 {
+    margin-bottom: 20px;
+    color: var(--text);
+}
+
+.interests-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.interest-tag {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    text-align: left;
+}
+
+.main-interest {
+    background-color: #f0f0f0;
+    cursor: default;
+}
+
+.interest-tag.selected {
+    background-color: blue;
+    color: white;
+}
+
+.sub-interests {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.sub-interests .interest-tag {
+    margin: 5px 0;
+    text-align: left;
+}
+
+.next-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--primary);
+    color: var(--light);
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.next-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+@media (max-width: 600px) {
+    .setup-container {
+        padding: 20px;
+    }
+
+    .interests-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+} 
+
+<script>
+    // Add this JavaScript to handle interest selection
+    document.querySelectorAll('.sub-interests .interest-tag').forEach(tag => {
+        tag.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent event from bubbling up to main interest
+            this.classList.toggle('selected'); // Toggle the selected class
+        });
+    });
+
+    // Prevent selection on main interest headings
+    document.querySelectorAll('.main-interest').forEach(heading => {
+        heading.addEventListener('click', function(event) {
+            // Prevent the default action and stop propagation
+            event.preventDefault(); // Prevent default action
+            event.stopPropagation(); // Prevent event from bubbling up
+        });
+    });
+</script> 

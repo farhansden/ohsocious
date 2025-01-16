@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socious - Complete Your Profile</title>
+    <link rel="stylesheet" href="profile-setup.css">
+    <link rel="stylesheet" href="interests.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Add this CSS for selected interest */
+        .interest-tag.selected {
+            background-color: blue; /* Change to your desired color */
+            color: white; /* Change text color for better contrast */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="setup-container">
+            <h1>Complete Your Profile</h1>
+
+            <form id="profileSetupForm">
+                <div class="interests-section">
+                    <h2>Select Your Interests</h2>
+                    <div class="interests-container">
+                        <div class="interest-tag main-interest" data-interest="tech">
+                            <span>💻 Technology</span>
+                            <div class="sub-interests">
+                                <div class="interest-tag" data-interest="web-development">
+                                    <span>🌐 Web Development</span>
+                                </div>
+                                <div class="interest-tag" data-interest="frontend">
+                                    <span>🖥️ Frontend Development</span>
+                                </div>
+                                <div class="interest-tag" data-interest="backend">
+                                    <span>⚙️ Backend Development</span>
+                                </div>
+                                <div class="interest-tag" data-interest="web-design">
+                                    <span>🎨 Web Design</span>
+                                </div>
+                                <div class="interest-tag" data-interest="graphic-design">
+                                    <span>🖌️ Graphic Designing</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interest-tag main-interest" data-interest="gaming">
+                            <span>🎮 Gaming</span>
+                            <div class="sub-interests">
+                                <div class="interest-tag" data-interest="action-games">
+                                    <span>⚔️ Action Games</span>
+                                </div>
+                                <div class="interest-tag" data-interest="strategy-games">
+                                    <span>🧠 Strategy Games</span>
+                                </div>
+                                <div class="interest-tag" data-interest="simulation-games">
+                                    <span>🎮 Simulation Games</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interest-tag main-interest" data-interest="sports">
+                            <span>🏃‍♂️ Sports</span>
+                            <div class="sub-interests">
+                                <div class="interest-tag" data-interest="football">
+                                    <span>⚽ Football</span>
+                                </div>
+                                <div class="interest-tag" data-interest="cricket">
+                                    <span>🏏 Cricket</span>
+                                </div>
+                                <div class="interest-tag" data-interest="basketball">
+                                    <span>🏀 Basketball</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="interest-tag main-interest" data-interest="books">
+                            <span>📚 Books</span>
+                            <div class="sub-interests">
+                                <div class="interest-tag" data-interest="novels">
+                                    <span>📖 Novels</span>
+                                </div>
+                                <div class="interest-tag" data-interest="philosophy">
+                                    <span>🧠 Philosophy</span>
+                                </div>
+                                <div class="interest-tag" data-interest="comics">
+                                    <span>📰 Comics</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="next-btn" onclick="window.location.href='loader5.html'">Continue</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Add this JavaScript to handle interest selection
+        document.querySelectorAll('.sub-interests .interest-tag').forEach(tag => {
+            tag.addEventListener('click', function(event) {
+                event.stopPropagation(); // Prevent event from bubbling up to main interest
+                this.classList.toggle('selected'); // Toggle the selected class
+            });
+        });
+
+        // Prevent selection on main interest headings
+        document.querySelectorAll('.main-interest').forEach(heading => {
+            heading.addEventListener('click', function(event) {
+                // Prevent the default action and stop propagation
+                event.preventDefault(); // Prevent default action
+                event.stopPropagation(); // Prevent event from bubbling up
+            });
+        });
+    </script>
+</body>
+</html> 
