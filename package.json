@@ -1,0 +1,17 @@
+{
+  "name": "vercel-project",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc && webpack", // Or a relevant build command
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "webpack": "^5.0.0",
+    "ts-loader": "^9.0.0"
+  }
+}
